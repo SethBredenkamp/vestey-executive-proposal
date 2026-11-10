@@ -234,7 +234,7 @@ export function App() {
               title="Open Private Staging Environment"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-              <span>Staging: vestey-staging.vercel.app</span>
+              <span>Staging: vestey-staging.codekings.dev</span>
               <ExternalLink className="h-3 w-3 shrink-0 opacity-80" />
             </a>
           </div>

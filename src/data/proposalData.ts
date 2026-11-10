@@ -52,7 +52,7 @@ export const PAYMENT_URL_FULL_60K = 'https://pay.yoco.com/r/lwaqvz';
 export const getPaymentUrl = (commandCenterEnabled: boolean): string =>
   commandCenterEnabled ? PAYMENT_URL_FULL_60K : PAYMENT_URL_BASE_35K;
 
-export const STAGING_URL = 'https://vestey-staging.vercel.app';
+export const STAGING_URL = 'https://vestey-staging.codekings.dev';
 export const LIVE_DOMAIN = 'vestey.codekings.dev';
 
 export const BANKING_DETAILS = {
@@ -450,7 +450,7 @@ export const getRoadmapMilestones = (commandCenterEnabled: boolean): RoadmapMile
         'Digital asset extraction and high-resolution optimization of all 3 catalogues (Chicken, Dairy, Fries)',
         'Brand palette definition honoring Vestey heritage deep green, Cresswell royal gold/navy, and Sunnydale warm amber',
         'Information architecture map of the 5 requested pages (Landing, Chicken, Dairy, Fries, Contact)',
-        'Private Vercel staging deployment initialization on `vestey-staging.vercel.app`'
+        'Private Vercel staging deployment initialization on `vestey-staging.codekings.dev`'
       ],
       deliverableReviewGate: 'Interactive staging prototype shared for executive review.'
     },
