@@ -1,21 +1,15 @@
 import React from 'react';
 import {
-  Calendar,
   CheckCircle2,
-  AlertCircle,
-  FileText,
-  ShieldCheck,
-  ArrowRight,
-  ArrowLeft,
-  Clock,
-  Layers,
-  ChevronDown
+  AlertCircle
 } from 'lucide-react';
 import {
-  ROADMAP_MILESTONES,
+  getRoadmapMilestones,
+  getTimelineDescription,
   SOW_ASSUMPTIONS,
   SOW_EXCLUSIONS,
-  STAGING_URL
+  STAGING_URL,
+  RoadmapMilestone
 } from '../data/proposalData';
 
 interface RoadmapAndSowAccordionProps {
@@ -29,8 +23,11 @@ export const RoadmapAndSowAccordion: React.FC<RoadmapAndSowAccordionProps> = ({
   onNextPage,
   commandCenterEnabled
 }) => {
+  const milestones = getRoadmapMilestones(commandCenterEnabled);
+  const timelineDesc = getTimelineDescription(commandCenterEnabled);
+
   return (
-    <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+    <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 w-full overflow-hidden">
       {/* Chapter Eyebrow Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[var(--line)] pb-5">
         <div>
@@ -39,7 +36,7 @@ export const RoadmapAndSowAccordion: React.FC<RoadmapAndSowAccordionProps> = ({
             Turnkey Delivery Plan & Terms of Engagement
           </h2>
           <p className="text-xs sm:text-sm text-ck-fg2 mt-1">
-            Structured 3-4 week milestone rollout on private staging with zero disruption to existing business.
+            {timelineDesc} on private staging with zero disruption to existing business.
           </p>
         </div>
 
@@ -61,20 +58,23 @@ export const RoadmapAndSowAccordion: React.FC<RoadmapAndSowAccordionProps> = ({
         </div>
       </div>
 
-      {/* 4-Phase Delivery Roadmap Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {ROADMAP_MILESTONES.map((phase, idx) => {
-          const isPhase4 = idx === 3;
-          if (isPhase4 && !commandCenterEnabled) {
-            // If command center not enabled, show as optional add-on stage
-          }
+      {/* Dynamic Delivery Roadmap Grid: 3 columns if base, 4 columns if Command Center */}
+      <div
+        className={`grid gap-4 ${
+          commandCenterEnabled
+            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
+            : 'grid-cols-1 md:grid-cols-3'
+        }`}
+      >
+        {milestones.map((phase: RoadmapMilestone, idx: number) => {
+          const isPhase4 = phase.step.includes('04');
 
           return (
             <div
               key={idx}
               className={`rounded-2xl border p-5 flex flex-col justify-between space-y-4 transition ${
-                isPhase4 && !commandCenterEnabled
-                  ? 'border-white/5 bg-ck-surface/50 opacity-60'
+                isPhase4
+                  ? 'border-emerald-500/40 bg-emerald-500/5'
                   : 'border-[var(--line)] bg-ck-surface hover:border-emerald-500/40'
               }`}
             >
@@ -94,7 +94,7 @@ export const RoadmapAndSowAccordion: React.FC<RoadmapAndSowAccordionProps> = ({
                 <p className="text-[11.5px] text-zinc-400 leading-relaxed">{phase.focus}</p>
 
                 <div className="space-y-1.5 pt-1">
-                  {phase.deliverables.map((d, dIdx) => (
+                  {phase.deliverables.map((d: string, dIdx: number) => (
                     <div key={dIdx} className="flex items-start gap-2 text-[11px] text-zinc-300">
                       <span className="text-emerald-400 font-bold shrink-0 mt-0.5">•</span>
                       <span>{d}</span>

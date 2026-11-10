@@ -1,3 +1,4 @@
+import { jsPDF } from 'jspdf';
 import {
   BASE_BUILD_GBP,
   BASE_BUILD_ZAR,
@@ -8,9 +9,13 @@ import {
   STAGING_URL,
   formatGBP,
   formatZAR,
-  ROADMAP_MILESTONES,
+  getRoadmapMilestones,
+  getPaymentUrl,
+  getTimelineBadge,
+  EXECUTIVE_ROLES,
   SOW_ASSUMPTIONS,
-  SOW_EXCLUSIONS
+  SOW_EXCLUSIONS,
+  RoadmapMilestone
 } from '../data/proposalData';
 
 export interface PdfProposalOptions {
@@ -23,7 +28,6 @@ export interface PdfProposalOptions {
 }
 
 export async function generateProposalPdf(options: PdfProposalOptions): Promise<void> {
-  const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'pt',
@@ -38,8 +42,8 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
 
   const totalGBP = BASE_BUILD_GBP + (options.commandCenterEnabled ? COMMAND_CENTER_GBP : 0);
   const totalZAR = BASE_BUILD_ZAR + (options.commandCenterEnabled ? COMMAND_CENTER_ZAR : 0);
-  const depositGBP = Math.round(totalGBP / 2);
-  const finalGBP = totalGBP - depositGBP;
+  const paymentLink = getPaymentUrl(options.commandCenterEnabled);
+  const timelineBadge = getTimelineBadge(options.commandCenterEnabled);
 
   const resolvedClientName = options.clientName?.trim() || 'Vestey Foods Representative';
   const resolvedClientTitle = options.clientTitle?.trim() || 'Commercial Director';
@@ -106,7 +110,7 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
     doc.setFontSize(7.2);
     doc.setTextColor(100, 116, 139);
     doc.text(
-      'Code Kings (Seth Bredenkamp, Lead Dev & Megan Bredenkamp, Managing Director) • Prepared for Vestey Foods International Ltd',
+      `Code Kings (${EXECUTIVE_ROLES.seth.name}, ${EXECUTIVE_ROLES.seth.title} & ${EXECUTIVE_ROLES.megan.name}, ${EXECUTIVE_ROLES.megan.title}) • Vestey Foods Scope`,
       margin,
       pageHeight - 20
     );
@@ -144,7 +148,7 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
     'This agreement outlines the turnkey engineering scope for Vestey Foods International Ltd. As requested in the client brief, Code Kings will build a unified, high-converting digital storefront featuring a flagship Tri-Brand Landing Page showcasing all three premium lines, followed by three dedicated catalogue pages for Cooked Chicken (8 Signature Gourmet SKUs), Cresswell Dairy Farm (Foodservice blocks & retail cheeses), and Sunnydale Farms (Shoestring fries & specialty shapes), alongside a Global Trade RFQ Contact Us page. ' +
       (options.commandCenterEnabled
         ? 'This proposal also includes the optional Custom Code Kings Command Center, granting your internal team total self-service control over products, pack specs, and downloadable brochures with zero monthly CMS plugin fees.'
-        : 'Development takes place on private staging prior to final DNS cutover.'),
+        : 'Development takes place on private staging prior to final DNS cutover. Due to the compact size and accelerated delivery schedule, engagement is authorized via a single 100% upfront project investment upon signing.'),
     contentWidth - 26
   );
   letter.forEach((line: string, idx: number) => {
@@ -153,7 +157,7 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
 
   y += 98;
 
-  // 3 Financial Metric Cards in GBP
+  // 3 Financial Metric Cards in GBP (Single 100% Upfront Investment Structure)
   const metricCardWidth = (contentWidth - 16) / 3;
   const metricH = 68;
   const metrics = [
@@ -164,16 +168,16 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
       tag: `EQUIV. ${formatZAR(totalZAR)} ZAR`
     },
     {
-      label: '50% INITIAL RETAINER',
-      val: `${formatGBP(depositGBP)} GBP`,
-      sub: 'Due Upon Execution',
-      tag: 'INITIATES WEEK 1 SETUP'
+      label: 'SINGLE UPFRONT INVESTMENT',
+      val: `${formatGBP(totalGBP)} GBP`,
+      sub: '100% Due Upon Authorization',
+      tag: 'LOCKS IN DELIVERY SPRINT'
     },
     {
-      label: '50% FINAL MILESTONE',
-      val: `${formatGBP(finalGBP)} GBP`,
-      sub: 'Due Upon Staging Approval',
-      tag: 'PRIOR TO LIVE DNS CUTOVER'
+      label: 'DELIVERY TIMELINE',
+      val: options.commandCenterEnabled ? '3-4 Weeks' : '2-3 Weeks',
+      sub: options.commandCenterEnabled ? 'Full Command Center Handover' : 'Fast-Track Turnkey Launch',
+      tag: timelineBadge.toUpperCase()
     }
   ];
 
@@ -394,58 +398,71 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   drawFooter();
 
   // =========================================================================
-  // PAGE 3: ROADMAP, TERMS & ASSUMPTIONS
+  // PAGE 3: DYNAMIC ROADMAP, TERMS & ASSUMPTIONS
   // =========================================================================
   doc.addPage();
-  drawHeaderBanner('Turnkey Delivery Timeline & SOW Terms', '3');
+  drawHeaderBanner(
+    options.commandCenterEnabled
+      ? '3-4 Week Turnkey Rollout Plan & SOW Terms'
+      : '2-3 Week Fast-Track Delivery Plan & SOW Terms',
+    '3'
+  );
 
-  // 4 Roadmap Phases
+  const dynamicMilestones = getRoadmapMilestones(options.commandCenterEnabled);
+  const phaseCardHeight = options.commandCenterEnabled ? 68 : 82;
+
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
   doc.setTextColor(15, 23, 42);
-  doc.text('3-4 Week Turnkey Rollout Plan', margin, y);
+  doc.text(
+    options.commandCenterEnabled
+      ? 'Turnkey 3-4 Week Rollout Plan (With Command Center)'
+      : 'Fast-Track 2-3 Week Turnkey Rollout Plan',
+    margin,
+    y
+  );
   y += 12;
 
-  ROADMAP_MILESTONES.forEach((phase) => {
+  dynamicMilestones.forEach((phase: RoadmapMilestone) => {
     doc.setFillColor(255, 255, 255);
     doc.setDrawColor(203, 213, 225);
-    doc.roundedRect(margin, y, contentWidth, 74, 4, 4, 'FD');
+    doc.roundedRect(margin, y, contentWidth, phaseCardHeight, 4, 4, 'FD');
 
     doc.setFillColor(240, 253, 244);
-    doc.roundedRect(margin, y, 95, 74, 4, 4, 'F');
+    doc.roundedRect(margin, y, 95, phaseCardHeight, 4, 4, 'F');
     doc.setDrawColor(187, 247, 208);
-    doc.line(margin + 95, y, margin + 95, y + 74);
+    doc.line(margin + 95, y, margin + 95, y + phaseCardHeight);
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8.5);
     doc.setTextColor(4, 120, 87);
-    doc.text(phase.step, margin + 10, y + 22);
+    doc.text(phase.step, margin + 10, y + 20);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.8);
     doc.setTextColor(71, 85, 105);
-    doc.text(phase.timeline, margin + 10, y + 36);
+    doc.text(phase.timeline, margin + 10, y + 34);
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
     doc.setTextColor(15, 23, 42);
-    doc.text(phase.title, margin + 108, y + 20);
+    doc.text(phase.title, margin + 108, y + 18);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.6);
+    doc.setFontSize(7.4);
     doc.setTextColor(51, 65, 85);
-    phase.deliverables.slice(0, 3).forEach((del, idx) => {
-      doc.text(`•  ${del}`, margin + 108, y + 35 + idx * 12, { maxWidth: contentWidth - 120 });
+    phase.deliverables.slice(0, 3).forEach((del: string, idx: number) => {
+      doc.text(`•  ${del}`, margin + 108, y + 32 + idx * 11, { maxWidth: contentWidth - 120 });
     });
 
-    y += 82;
+    y += phaseCardHeight + 8;
   });
 
-  y += 8;
+  y += 4;
 
   // Assumptions & Exclusions 2-Col
   const colW = (contentWidth - 14) / 2;
-  const colH = 140;
+  const colH = options.commandCenterEnabled ? 135 : 150;
 
   // Left Col: Assumptions
   doc.setFillColor(248, 250, 252);
@@ -461,7 +478,7 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.setFontSize(7.2);
   doc.setTextColor(51, 65, 85);
   SOW_ASSUMPTIONS.slice(0, 5).forEach((a, idx) => {
-    doc.text(`0${idx + 1}. ${a}`, margin + 10, y + 34 + idx * 21, { maxWidth: colW - 20 });
+    doc.text(`0${idx + 1}. ${a}`, margin + 10, y + 32 + idx * 21, { maxWidth: colW - 20 });
   });
 
   // Right Col: Exclusions
@@ -479,7 +496,7 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.setFontSize(7.2);
   doc.setTextColor(51, 65, 85);
   SOW_EXCLUSIONS.forEach((e, idx) => {
-    doc.text(`•  ${e}`, rx + 10, y + 34 + idx * 24, { maxWidth: colW - 20 });
+    doc.text(`•  ${e}`, rx + 10, y + 32 + idx * 22, { maxWidth: colW - 20 });
   });
 
   drawFooter();
@@ -490,10 +507,10 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.addPage();
   drawHeaderBanner('Commercial Acceptance & Tri-Signatory Execution', '4');
 
-  // Payment Options Box
+  // Payment Options Box (100% Upfront Investment)
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(203, 213, 225);
-  doc.roundedRect(margin, y, contentWidth, 90, 4, 4, 'FD');
+  doc.roundedRect(margin, y, contentWidth, 98, 4, 4, 'FD');
 
   doc.setFillColor(15, 23, 42);
   doc.roundedRect(margin, y, contentWidth, 20, 4, 4, 'F');
@@ -502,10 +519,10 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(52, 211, 153);
-  doc.text('COMMERCIAL WIRE & PAYMENT INSTRUCTIONS', margin + 10, y + 13.5);
+  doc.text('COMMERCIAL WIRE & PAYMENT INSTRUCTIONS (100% UPFRONT INVESTMENT)', margin + 10, y + 13.5);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.8);
+  doc.setFontSize(7.6);
   doc.setTextColor(51, 65, 85);
   doc.text(
     `Beneficiary Name: ${BANKING_DETAILS.accountName}   |   Bank: ${BANKING_DETAILS.bankName}   |   Account No: ${BANKING_DETAILS.accountNumber}`,
@@ -515,15 +532,23 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.text(
     `Branch Code: ${BANKING_DETAILS.branchCode}   |   SWIFT / BIC Code: ${BANKING_DETAILS.swiftCode}   |   Payment Ref: ${BANKING_DETAILS.paymentReference}`,
     margin + 10,
-    y + 52
+    y + 50
   );
   doc.text(
-    `Credit Card Gateway: Direct Paystack / Yoco online card clearing available with instant confirmation.`,
+    `Credit / Debit Card Portal: Instant clearing via encrypted Yoco gateway: ${paymentLink}`,
     margin + 10,
-    y + 68
+    y + 64
+  );
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7.4);
+  doc.setTextColor(4, 120, 87);
+  doc.text(
+    `Investment Terms: Single 100% upfront investment (${formatGBP(totalGBP)} GBP) secures immediate sprint kickoff.`,
+    margin + 10,
+    y + 80
   );
 
-  y += 105;
+  y += 114;
 
   // Tri-Signatory Execution Block
   doc.setFont('helvetica', 'bold');
@@ -535,7 +560,7 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   const sigColW = (contentWidth - 16) / 3;
   const sigH = 145;
 
-  // Signatory 1: Lead Developer (Seth Bredenkamp)
+  // Signatory 1: Seth Bredenkamp (Founder - Lead Developer)
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(203, 213, 225);
   doc.roundedRect(margin, y, sigColW, sigH, 4, 4, 'FD');
@@ -543,23 +568,23 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(4, 120, 87);
-  doc.text('AGENCY LEAD DEVELOPER', margin + 10, y + 16);
+  doc.text('FOUNDER - LEAD DEVELOPER', margin + 10, y + 16);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(14);
   doc.setTextColor(4, 120, 87);
-  doc.text('Seth Bredenkamp', margin + 10, y + 60);
+  doc.text(EXECUTIVE_ROLES.seth.name, margin + 10, y + 60);
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(15, 23, 42);
-  doc.text('Seth Bredenkamp', margin + 10, y + 90);
+  doc.text(EXECUTIVE_ROLES.seth.name, margin + 10, y + 90);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.2);
   doc.setTextColor(71, 85, 105);
-  doc.text('Principal Solutions Architect\nCode Kings Digital Agency', margin + 10, y + 104);
+  doc.text(`${EXECUTIVE_ROLES.seth.title}\nCode Kings Digital Agency`, margin + 10, y + 104);
 
-  // Signatory 2: Managing Director (Megan Bredenkamp)
+  // Signatory 2: Megan Bredenkamp (VP Operations)
   const mx2 = margin + sigColW + 8;
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(203, 213, 225);
@@ -568,21 +593,21 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(4, 120, 87);
-  doc.text('AGENCY MANAGING DIRECTOR', mx2 + 10, y + 16);
+  doc.text('VP OPERATIONS', mx2 + 10, y + 16);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(14);
   doc.setTextColor(4, 120, 87);
-  doc.text('Megan Bredenkamp', mx2 + 10, y + 60);
+  doc.text(EXECUTIVE_ROLES.megan.name, mx2 + 10, y + 60);
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(15, 23, 42);
-  doc.text('Megan Bredenkamp', mx2 + 10, y + 90);
+  doc.text(EXECUTIVE_ROLES.megan.name, mx2 + 10, y + 90);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.2);
   doc.setTextColor(71, 85, 105);
-  doc.text('Managing Director & Commercial Lead\nCode Kings Digital Agency', mx2 + 10, y + 104);
+  doc.text(`${EXECUTIVE_ROLES.megan.title}\nCode Kings Digital Agency`, mx2 + 10, y + 104);
 
   // Signatory 3: Client Signatory (Vestey Foods)
   const mx3 = margin + (sigColW + 8) * 2;
@@ -638,7 +663,23 @@ export async function generateProposalPdf(options: PdfProposalOptions): Promise<
 
   drawFooter();
 
-  // Save the PDF
+  // Save the PDF using standard Blob URL download for cross-device reliability
   const filename = `CodeKings-VesteyFoods-ExecutiveProposal-${totalGBP}GBP.pdf`;
-  doc.save(filename);
+  try {
+    const blob = doc.output('blob');
+    const blobUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = filename;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+    }, 2000);
+  } catch (err) {
+    console.warn('Direct blob anchor download fallback to doc.save():', err);
+    doc.save(filename);
+  }
 }

@@ -45,9 +45,15 @@ export const BASE_BUILD_ZAR = 35000;
 export const COMMAND_CENTER_GBP = 1150;
 export const COMMAND_CENTER_ZAR = 25000;
 
+// Dynamic Payment URLs (Provided by user)
+export const PAYMENT_URL_BASE_35K = 'https://pay.yoco.com/r/nQEkBB';
+export const PAYMENT_URL_FULL_60K = 'https://pay.yoco.com/r/lwaqvz';
+
+export const getPaymentUrl = (commandCenterEnabled: boolean): string =>
+  commandCenterEnabled ? PAYMENT_URL_FULL_60K : PAYMENT_URL_BASE_35K;
+
 export const STAGING_URL = 'https://vestey-staging.vercel.app';
 export const LIVE_DOMAIN = 'vestey.codekings.dev';
-export const PAYSTACK_PAYMENT_URL = 'https://pay.yoco.com/r/YPKyXB';
 
 export const BANKING_DETAILS = {
   accountName: 'Code Kings',
@@ -85,6 +91,29 @@ export const CLIENT_INFO = {
   dairyEmail: 'dairy@vestey.com',
   websites: ['vesteyfoodsint.com', 'cresswell.uk.com', 'sunnydale-farms.com']
 };
+
+// Executive Roles (Updated per user instruction)
+export const EXECUTIVE_ROLES = {
+  seth: {
+    name: 'Seth Bredenkamp',
+    title: 'Founder - Lead Developer',
+    roleLabel: 'Code Kings Lead Solutions Architect & Engineer'
+  },
+  megan: {
+    name: 'Megan Bredenkamp',
+    title: 'VP Operations',
+    roleLabel: 'Code Kings Operational Lead & Commercial Partner'
+  }
+};
+
+// Timeline helpers
+export const getTimelineBadge = (commandCenterEnabled: boolean): string =>
+  commandCenterEnabled ? 'Turnkey 3-4 Week Delivery' : 'Turnkey 2-3 Week Delivery';
+
+export const getTimelineDescription = (commandCenterEnabled: boolean): string =>
+  commandCenterEnabled
+    ? '3-4 Week Milestone Rollout with Command Center Handover'
+    : '2-3 Week Streamlined Fast-Track Launch';
 
 // 5 Core Deliverables requested + Custom Command Center Add-on
 export const SCOPE_ITEMS: ScopeDeliverable[] = [
@@ -408,72 +437,85 @@ export const SAMPLE_PRODUCTS: ProductItem[] = [
   }
 ];
 
-// Project Roadmap (3-4 week turnkey delivery)
-export const ROADMAP_MILESTONES: RoadmapMilestone[] = [
-  {
-    step: 'Phase 01',
-    timeline: 'Week 1',
-    title: 'Brand Styling, Information Architecture & Catalogue Extraction',
-    badge: 'STAGE 1: FOUNDATION',
-    focus: 'Structuring all 3 brand identities (Cresswell Chicken, Cresswell Dairy, Sunnydale Farms) under Vestey Foods UK.',
-    deliverables: [
-      'Digital asset extraction and high-resolution optimization of all 3 catalogues (Chicken, Dairy, Fries)',
-      'Brand palette definition honoring Vestey heritage deep green, Cresswell royal gold/navy, and Sunnydale warm amber',
-      'Information architecture map of the 5 requested pages (Landing, Chicken, Dairy, Fries, Contact)',
-      'Private Vercel staging deployment initialization on `vestey-staging.vercel.app`'
-    ],
-    deliverableReviewGate: 'Interactive staging prototype shared for executive review.'
-  },
-  {
-    step: 'Phase 02',
-    timeline: 'Week 2',
-    title: 'Product Verticals Build & Interactive Specification Catalogues',
-    badge: 'STAGE 2: PAGES & CATALOGUES',
-    focus: 'Building out the Cooked Chicken, Dairy, and Fries pages with full pack/carton spec tables.',
-    deliverables: [
-      'Complete 8-item Signature Gourmet Cooked Chicken showcase with pack, carton, and 11-language bag breakdown',
-      'Full Cresswell Dairy Farm directory with Foodservice vs Retail line filtering, cheese families, and butter blocks',
-      'Sunnydale Farms Potato directory with cut thickness selector, specialty shapes gallery, and coated/uncoated toggles',
-      'High-speed instant search and category quick-filter pills across all product verticals'
-    ],
-    deliverableReviewGate: 'Full product directory review with live filtering on staging.'
-  },
-  {
-    step: 'Phase 03',
-    timeline: 'Week 3',
-    title: 'Global Trade RFQ Portal, Responsive QA & Catalogue Downloads',
-    badge: 'STAGE 3: TRADE & LAUNCH PREP',
-    focus: 'Integrating the Contact Us & RFQ system, PDF download center, and cross-device testing.',
-    deliverables: [
-      'Global Trade RFQ contact portal with multi-product selection and automated dispatch to Vestey Surrey trade desk',
-      'Direct PDF catalogue download manager serving print-quality brochures without third-party popups',
-      'Cross-device mobile QA across iOS Safari, Android Chrome, tablet, and 4K desktop screens',
-      'Security review, SSL configuration, Cloudflare edge caching, and Google Search Console indexing setup'
-    ],
-    deliverableReviewGate: 'Final staging sign-off on 5 core pages prior to DNS cutover.'
-  },
-  {
-    step: 'Phase 04 (Optional)',
-    timeline: 'Week 4',
-    title: 'Custom Command Center Deployment & Handover Training',
-    badge: 'OPTIONAL ADD-ON: COMMAND CENTER',
-    focus: 'Deploying the private client portal if the Command Center add-on is selected (+£1,150).',
-    deliverables: [
-      'Self-service visual dashboard for Vestey team to add/edit products, specs, and pack weights',
-      'PDF brochure upload manager allowing instant replacement of downloadable catalogues',
-      'Inbound trade inquiry review table with 1-click CSV export for the sales team',
-      'Plain-English video walkthrough and documentation handover for the Vestey internal team'
-    ],
-    deliverableReviewGate: 'Admin credential handover and guided live demonstration session.'
+// Dynamic Roadmap Milestones function
+export const getRoadmapMilestones = (commandCenterEnabled: boolean): RoadmapMilestone[] => {
+  const baseMilestones: RoadmapMilestone[] = [
+    {
+      step: 'Phase 01',
+      timeline: 'Week 1',
+      title: 'Brand Styling, Information Architecture & Catalogue Extraction',
+      badge: 'STAGE 1: FOUNDATION',
+      focus: 'Structuring all 3 brand identities (Cresswell Chicken, Cresswell Dairy, Sunnydale Farms) under Vestey Foods UK.',
+      deliverables: [
+        'Digital asset extraction and high-resolution optimization of all 3 catalogues (Chicken, Dairy, Fries)',
+        'Brand palette definition honoring Vestey heritage deep green, Cresswell royal gold/navy, and Sunnydale warm amber',
+        'Information architecture map of the 5 requested pages (Landing, Chicken, Dairy, Fries, Contact)',
+        'Private Vercel staging deployment initialization on `vestey-staging.vercel.app`'
+      ],
+      deliverableReviewGate: 'Interactive staging prototype shared for executive review.'
+    },
+    {
+      step: 'Phase 02',
+      timeline: 'Week 2',
+      title: 'Product Verticals Build & Interactive Specification Catalogues',
+      badge: 'STAGE 2: PAGES & CATALOGUES',
+      focus: 'Building out the Cooked Chicken, Dairy, and Fries pages with full pack/carton spec tables.',
+      deliverables: [
+        'Complete 8-item Signature Gourmet Cooked Chicken showcase with pack, carton, and 11-language bag breakdown',
+        'Full Cresswell Dairy Farm directory with Foodservice vs Retail line filtering, cheese families, and butter blocks',
+        'Sunnydale Farms Potato directory with cut thickness selector, specialty shapes gallery, and coated/uncoated toggles',
+        'High-speed instant search and category quick-filter pills across all product verticals'
+      ],
+      deliverableReviewGate: 'Full product directory review with live filtering on staging.'
+    },
+    {
+      step: 'Phase 03',
+      timeline: 'Week 3',
+      title: commandCenterEnabled
+        ? 'Global Trade RFQ Portal, Responsive QA & Catalogue Downloads'
+        : 'Global Trade RFQ Portal, Responsive QA & Live DNS Launch',
+      badge: commandCenterEnabled ? 'STAGE 3: TRADE & LAUNCH PREP' : 'STAGE 3: FINAL QA & CUTOVER',
+      focus: 'Integrating the Contact Us & RFQ system, PDF download center, and cross-device testing.',
+      deliverables: [
+        'Global Trade RFQ contact portal with multi-product selection and automated dispatch to Vestey Surrey trade desk',
+        'Direct PDF catalogue download manager serving print-quality brochures without third-party popups',
+        'Cross-device mobile QA across iOS Safari, Android Chrome, tablet, and 4K desktop screens',
+        commandCenterEnabled
+          ? 'Security review, SSL configuration, and preparation for Command Center handover'
+          : 'Final client sign-off, live DNS cutover, and production domain verification'
+      ],
+      deliverableReviewGate: commandCenterEnabled
+        ? 'Staging review before final Command Center deployment.'
+        : 'Final staging sign-off and official live launch.'
+    }
+  ];
+
+  if (commandCenterEnabled) {
+    baseMilestones.push({
+      step: 'Phase 04',
+      timeline: 'Week 4',
+      title: 'Custom Command Center Deployment & Handover Training',
+      badge: 'STAGE 4: CLIENT PORTAL & LAUNCH',
+      focus: 'Deploying the private self-service client portal (+£1,150) and final live cutover.',
+      deliverables: [
+        'Self-service visual dashboard for Vestey team to add/edit products, specs, and pack weights',
+        'PDF brochure upload manager allowing instant replacement of downloadable catalogues',
+        'Inbound trade inquiry review table with 1-click CSV export for the sales team',
+        'Plain-English video walkthrough, admin credential handover, and live DNS cutover'
+      ],
+      deliverableReviewGate: 'Admin credential handover and guided live demonstration session.'
+    });
   }
-];
+
+  return baseMilestones;
+};
 
 export const SOW_ASSUMPTIONS = [
   'All high-resolution product photography, copy, and certifications provided in the PDF catalogues will be utilized for the digital build.',
   'Vestey Foods will provide domain registrar / DNS access to connect the production URL upon staging approval.',
   'Hosting is deployed on enterprise-grade Vercel Edge infrastructure with global CDN caching and 99.99% uptime guarantee.',
   'The digital quote is presented in British Pounds Sterling (GBP), converted from base South African Rand (ZAR) quotes at approximately 21.8 ZAR/GBP and rounded for executive presentation.',
-  '50% initial retainer is required to lock in the production schedule, with the remaining 50% due upon final staging sign-off prior to live domain cutover.'
+  'Due to the compact size and accelerated delivery schedule of this build, engagement is authorized via a single 100% upfront project investment upon signing, locking in the delivery sprint.'
 ];
 
 export const SOW_EXCLUSIONS = [

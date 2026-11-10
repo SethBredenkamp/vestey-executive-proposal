@@ -5,27 +5,25 @@ import {
   COMMAND_CENTER_GBP,
   COMMAND_CENTER_ZAR,
   BANKING_DETAILS,
-  PAYSTACK_PAYMENT_URL,
+  getPaymentUrl,
+  getTimelineBadge,
+  EXECUTIVE_ROLES,
   formatGBP,
   formatZAR,
   CLIENT_INFO,
   STAGING_URL
 } from '../data/proposalData';
-import { CoBrandedLockup } from './CoBrandedLockup';
 import {
   ShieldCheck,
   CheckCircle2,
   Lock,
-  Printer,
   BadgeCheck,
   CreditCard,
   AlertCircle,
-  ArrowLeft,
   Landmark,
   Copy,
   Check,
   ExternalLink,
-  Sparkles,
   FileDown
 } from 'lucide-react';
 
@@ -68,8 +66,8 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
 
   const totalGBP = BASE_BUILD_GBP + (commandCenterEnabled ? COMMAND_CENTER_GBP : 0);
   const totalZAR = BASE_BUILD_ZAR + (commandCenterEnabled ? COMMAND_CENTER_ZAR : 0);
-  const depositGBP = Math.round(totalGBP / 2);
-  const finalGBP = totalGBP - depositGBP;
+  const paymentUrl = getPaymentUrl(commandCenterEnabled);
+  const timelineBadge = getTimelineBadge(commandCenterEnabled);
 
   const handleCopy = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -88,11 +86,32 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
       return;
     }
     setValidationError(null);
+
+    // Privately notify Seth Bredenkamp that the proposal has been signed
+    // with client IP detection to verify whether it is a UK / external client
+    fetch('/api/notify-signed', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        clientName: clientName.trim(),
+        clientTitle: clientTitle.trim() || 'Commercial Director',
+        clientEmail: clientEmail.trim() || 'Not specified',
+        totalGBP,
+        totalZAR,
+        commandCenterEnabled,
+        timestamp: new Date().toISOString()
+      })
+    }).catch((err) => {
+      console.warn('Private notification dispatch caught:', err);
+    });
+
     onExecuteContract();
   };
 
   return (
-    <div id="digital-acceptance-gate" className="relative py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+    <div id="digital-acceptance-gate" className="relative py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 w-full overflow-hidden">
       {/* Chapter Eyebrow Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[var(--line)] pb-5">
         <div>
@@ -101,7 +120,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
             Itemized Digital Quote & Scope Authorization
           </h2>
           <p className="text-xs sm:text-sm text-ck-fg2 mt-1">
-            Sign digitally below to lock in the project scope and initiate Phase 1 staging setup.
+            Sign digitally below to lock in the project scope and initiate turnkey staging setup.
           </p>
         </div>
 
@@ -138,9 +157,9 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
           </div>
         </div>
 
-        {/* Ledger Table */}
-        <div className="rounded-xl border border-white/10 bg-ck-bg overflow-hidden">
-          <table className="w-full text-left text-xs">
+        {/* Ledger Table with overflow-x-auto to prevent mobile stretch */}
+        <div className="rounded-xl border border-white/10 bg-ck-bg overflow-x-auto">
+          <table className="w-full text-left text-xs min-w-[540px]">
             <thead className="bg-ck-surface2 border-b border-white/5 text-[10.5px] font-mono text-zinc-400 uppercase">
               <tr>
                 <th className="py-3 px-4">Item & Deliverable Description</th>
@@ -163,28 +182,25 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
                   <p className="text-zinc-400 text-xs">
                     Landing Page (Tri-Brand Showcase) + Cooked Chicken Page (8 SKUs) + Cresswell Dairy Page (Foodservice & Retail) + Sunnydale Fries Page + Contact Us / Global RFQ Page.
                   </p>
-                  <div className="font-mono text-[10px] text-zinc-500">
-                    Base Quote: {formatZAR(BASE_BUILD_ZAR)} ZAR • Turnkey Next.js & Tailwind setup • Private Staging
-                  </div>
                 </td>
-                <td className="py-4 px-4 hidden md:table-cell text-zinc-300 text-xs font-mono">
-                  5 Core Pages • Responsive iOS & Android • Cloudflare CDN • SEO Engine
+                <td className="py-4 px-4 font-mono text-xs text-zinc-400 hidden md:table-cell align-top">
+                  Turnkey Next.js, Tailwind CSS, Edge CDN, high-res catalogue asset extraction.
                 </td>
                 <td className="py-4 px-4 text-right align-top">
                   <span className="font-mono text-base font-bold text-white">{formatGBP(BASE_BUILD_GBP)}</span>
-                  <span className="block font-mono text-[10.5px] text-zinc-500">Base Deliverable</span>
+                  <span className="block font-mono text-[10.5px] text-zinc-500">Base Investment</span>
                 </td>
               </tr>
 
-              {/* Optional Custom Command Center Line */}
+              {/* Custom Command Center Optional Add-on Line */}
               <tr
                 className={`transition cursor-pointer ${
-                  commandCenterEnabled ? 'bg-emerald-500/[0.04]' : 'hover:bg-white/[0.02]'
+                  commandCenterEnabled ? 'bg-emerald-500/5' : 'hover:bg-white/[0.02]'
                 }`}
                 onClick={() => onToggleCommandCenter(!commandCenterEnabled)}
               >
                 <td className="py-4 px-4 space-y-1.5">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked={commandCenterEnabled}
@@ -193,20 +209,17 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
                       className="h-4 w-4 rounded border-zinc-600 bg-ck-bg text-emerald-500 focus:ring-emerald-400"
                     />
                     <span className="font-bold text-white text-sm">
-                      2. Custom Code Kings Command Center (Client Portal)
+                      2. Custom Code Kings Command Center (Client Backend)
                     </span>
-                    <span className="rounded bg-amber-400/20 px-1.5 py-0.2 font-mono text-[9px] text-amber-300 font-bold">
+                    <span className="rounded bg-emerald-400/20 px-1.5 py-0.2 font-mono text-[9px] text-emerald-300 font-semibold">
                       OPTIONAL ADD-ON
                     </span>
                   </div>
                   <p className="text-zinc-400 text-xs pl-6">
                     Self-service client backend allowing Vestey internal staff to update products, edit pack/carton weights, adjust shelf life, replace downloadable PDF brochures, and review inbound wholesale trade inquiries without code.
                   </p>
-                  <div className="font-mono text-[10px] text-zinc-500 pl-6">
-                    Add-on Quote: {formatZAR(COMMAND_CENTER_ZAR)} ZAR • Zero monthly CMS subscriptions • Permanent ownership
-                  </div>
                 </td>
-                <td className="py-4 px-4 hidden md:table-cell text-zinc-300 text-xs font-mono pl-6">
+                <td className="py-4 px-4 font-mono text-xs text-zinc-400 hidden md:table-cell align-top">
                   {commandCenterEnabled ? '✓ Selected in Quote' : '○ Click checkbox to include'}
                 </td>
                 <td className="py-4 px-4 text-right align-top">
@@ -245,33 +258,33 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
           </div>
         </div>
 
-        {/* 50 / 50 Payment Schedule Cards */}
+        {/* 100% Upfront Investment & Fast-Track Sprint Cards (Updated from 50/50 split) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 space-y-1">
             <span className="font-mono text-[10px] uppercase tracking-wider text-emerald-400 font-bold block">
-              Phase 1 Milestone (50% Deposit)
+              Single 100% Upfront Project Investment
             </span>
-            <div className="text-xl font-bold text-white font-mono">{formatGBP(depositGBP)} GBP</div>
+            <div className="text-xl font-bold text-white font-mono">{formatGBP(totalGBP)} GBP</div>
             <p className="text-[11.5px] text-zinc-400">
-              Due upon contract signing to initiate asset extraction, design system, and staging environment setup.
+              Due upon digital contract signing to immediately lock in the turnkey sprint schedule, asset extraction, and private staging setup.
             </p>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-ck-bg p-4 space-y-1">
             <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400 font-bold block">
-              Phase 2 Milestone (50% Final Balance)
+              Turnkey Sprint Delivery Schedule
             </span>
-            <div className="text-xl font-bold text-white font-mono">{formatGBP(finalGBP)} GBP</div>
+            <div className="text-xl font-bold text-white font-mono">{timelineBadge}</div>
             <p className="text-[11.5px] text-zinc-400">
-              Due upon final staging review and approval on {STAGING_URL} prior to live domain cutover.
+              Accelerated delivery on private staging ({STAGING_URL}) with full executive walkthrough prior to live domain cutover.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Payment Instructions: Wire Transfer (EFT/SWIFT) + Card Payment Link */}
+      {/* Payment Instructions: Wire Transfer (EFT/SWIFT) + Dynamic Card Payment Link */}
       <div className="rounded-2xl border border-[var(--line-2)] bg-ck-surface p-6 sm:p-7 shadow-xl space-y-6">
-        <div className="border-b border-white/10 pb-4 flex items-center justify-between">
+        <div className="border-b border-white/10 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Landmark className="h-5 w-5 text-emerald-400" />
             <h3 className="text-base font-bold text-white">Payment Options & International Wire Instructions</h3>
@@ -295,6 +308,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
                     type="button"
                     onClick={() => handleCopy(BANKING_DETAILS.accountName, 'accName')}
                     className="text-zinc-500 hover:text-emerald-400"
+                    title="Copy Beneficiary Name"
                   >
                     {copiedKey === 'accName' ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
                   </button>
@@ -314,6 +328,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
                     type="button"
                     onClick={() => handleCopy(BANKING_DETAILS.accountNumber, 'accNum')}
                     className="text-zinc-500 hover:text-emerald-400"
+                    title="Copy Account Number"
                   >
                     {copiedKey === 'accNum' ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
                   </button>
@@ -333,6 +348,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
                     type="button"
                     onClick={() => handleCopy(BANKING_DETAILS.swiftCode, 'swift')}
                     className="text-zinc-500 hover:text-emerald-400"
+                    title="Copy SWIFT Code"
                   >
                     {copiedKey === 'swift' ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
                   </button>
@@ -346,30 +362,40 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
             </div>
           </div>
 
-          {/* Credit Card / Direct Link Option */}
+          {/* Dynamic Credit Card Payment Link Option (35k vs 60k) */}
           <div className="rounded-xl border border-white/10 bg-ck-bg p-4 flex flex-col justify-between space-y-4">
             <div className="space-y-2">
               <span className="font-mono text-[10.5px] uppercase tracking-wider text-cyan-400 font-bold block">
-                Option B: Secure Card Payment Link
+                Option B: Instant Card Payment Portal
               </span>
               <p className="text-xs text-zinc-300 leading-relaxed">
-                If you prefer paying by corporate debit or credit card (Visa, Mastercard, American Express), our international Paystack/Yoco payment gateway clears instantly with zero bank delays.
+                If you prefer paying by corporate debit or credit card (Visa, Mastercard, American Express), our secure encrypted Yoco portal clears instantly with zero bank delays.
               </p>
+              <div className="rounded-lg bg-ck-surface2 p-2.5 font-mono text-[11px] text-zinc-400 space-y-1">
+                <div className="flex justify-between">
+                  <span>Selected Total:</span>
+                  <span className="text-emerald-400 font-bold">{formatGBP(totalGBP)} GBP ({formatZAR(totalZAR)} ZAR)</span>
+                </div>
+                <div className="flex justify-between text-[10px] text-zinc-500">
+                  <span>Scope Mode:</span>
+                  <span>{commandCenterEnabled ? 'Core + Command Center' : 'Core 5-Page Platform'}</span>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-2">
               <a
-                href={PAYSTACK_PAYMENT_URL}
+                href={paymentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2.5 text-xs font-semibold text-white hover:from-cyan-400 hover:to-blue-500 transition shadow-md"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2.5 text-xs font-bold text-slate-950 hover:from-emerald-400 hover:to-teal-500 transition shadow-md"
               >
                 <CreditCard className="h-4 w-4" />
-                <span>Open Secure Payment Portal</span>
+                <span>Pay {formatGBP(totalGBP)} Online via Yoco Gateway</span>
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
               <span className="text-[10.5px] text-zinc-500 text-center block font-mono">
-                256-Bit SSL Encrypted • Instant Receipt
+                256-Bit SSL Encrypted • Instant Confirmation
               </span>
             </div>
           </div>
@@ -378,7 +404,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
 
       {/* Interactive E-Signature Authorization Block */}
       <div className="rounded-2xl border border-[var(--line-2)] bg-ck-surface p-6 sm:p-8 shadow-2xl space-y-6">
-        <div className="border-b border-white/10 pb-4 flex items-center justify-between">
+        <div className="border-b border-white/10 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <span className="font-mono text-[10.5px] uppercase tracking-wider text-emerald-400 font-bold">
               Digital Contract Execution
@@ -454,7 +480,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
           </span>
         </div>
 
-        {/* Two Mandatory Checkboxes */}
+        {/* Two Mandatory Checkboxes (Updated for 100% single investment) */}
         <div className="space-y-3 pt-2">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
@@ -478,7 +504,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
               className="h-4 w-4 rounded border-zinc-600 bg-ck-bg text-emerald-500 focus:ring-emerald-400 mt-0.5"
             />
             <span className="text-xs text-zinc-300 leading-normal">
-              I authorize Code Kings Digital Agency to initiate Phase 1 Staging & Architecture setup upon receipt of the 50% Initial Retainer ({formatGBP(depositGBP)} GBP), with the remaining 50% ({formatGBP(finalGBP)} GBP) due upon staging approval prior to live domain cutover.
+              I authorize Code Kings Digital Agency to initiate turnkey staging and architecture setup upon receipt of the single 100% upfront project investment of {formatGBP(totalGBP)} GBP ({formatZAR(totalZAR)} ZAR), securing the dedicated sprint delivery schedule.
             </span>
           </label>
         </div>
@@ -525,7 +551,7 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
           </div>
         )}
 
-        {/* Countersigned Co-Founders Block */}
+        {/* Countersigned Co-Founders Block (Updated Role Titles) */}
         <div className="border-t border-white/10 pt-5 space-y-3">
           <div className="font-mono text-[10.5px] uppercase tracking-wider text-zinc-400 font-bold">
             Authorized Code Kings Agency Signatories
@@ -535,10 +561,11 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
             <div className="rounded-xl border border-white/5 bg-ck-bg p-3.5 flex items-center justify-between">
               <div>
                 <span className="font-signature text-2xl text-emerald-400 block leading-tight">
-                  Seth Bredenkamp
+                  {EXECUTIVE_ROLES.seth.name}
                 </span>
-                <span className="text-xs font-bold text-white">Seth Bredenkamp</span>
-                <span className="font-mono text-[10px] text-zinc-500 block">Lead Solutions Architect</span>
+                <span className="text-xs font-bold text-white">{EXECUTIVE_ROLES.seth.name}</span>
+                <span className="font-mono text-[10px] text-emerald-400 block font-semibold">{EXECUTIVE_ROLES.seth.title}</span>
+                <span className="font-mono text-[9px] text-zinc-500 block">Code Kings Digital Agency</span>
               </div>
               <div className="text-right font-mono text-[10px] text-emerald-400">
                 <span>Verified Seal</span>
@@ -548,10 +575,11 @@ export const DigitalExecutionGate: React.FC<DigitalExecutionGateProps> = ({
             <div className="rounded-xl border border-white/5 bg-ck-bg p-3.5 flex items-center justify-between">
               <div>
                 <span className="font-signature text-2xl text-emerald-400 block leading-tight">
-                  Megan Bredenkamp
+                  {EXECUTIVE_ROLES.megan.name}
                 </span>
-                <span className="text-xs font-bold text-white">Megan Bredenkamp</span>
-                <span className="font-mono text-[10px] text-zinc-500 block">Managing Director & Finance Partner</span>
+                <span className="text-xs font-bold text-white">{EXECUTIVE_ROLES.megan.name}</span>
+                <span className="font-mono text-[10px] text-emerald-400 block font-semibold">{EXECUTIVE_ROLES.megan.title}</span>
+                <span className="font-mono text-[9px] text-zinc-500 block">Code Kings Digital Agency</span>
               </div>
               <div className="text-right font-mono text-[10px] text-emerald-400">
                 <span>Verified Seal</span>

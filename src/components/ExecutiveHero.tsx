@@ -23,6 +23,7 @@ import {
   COMMAND_CENTER_ZAR,
   formatGBP,
   formatZAR,
+  getTimelineBadge,
   CLIENT_INFO,
   STAGING_URL
 } from '../data/proposalData';
@@ -63,7 +64,7 @@ export const ExecutiveHero: React.FC<ExecutiveHeroProps> = ({
           <div className="flex items-center gap-2 font-mono text-xs text-ck-fg2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-emerald-400">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Turnkey 3-4 Week Delivery
+              {getTimelineBadge(commandCenterEnabled)}
             </span>
           </div>
         </div>
@@ -301,23 +302,23 @@ export const ExecutiveHero: React.FC<ExecutiveHeroProps> = ({
                   </div>
                 </div>
 
-                {/* 50 / 50 Milestone Split */}
+                {/* Single 100% Upfront Investment & Turnkey Sprint Cards */}
                 <div className="grid grid-cols-2 gap-2 pt-1 font-mono text-xs">
                   <div className="rounded-lg bg-ck-bg p-2.5 border border-white/5">
-                    <span className="text-[10px] uppercase text-zinc-400 block font-semibold">50% Deposit</span>
-                    <span className="text-sm font-bold text-white">{formatGBP(Math.round(totalGBP / 2))}</span>
-                    <span className="text-[9.5px] text-emerald-400 block">Initiates Week 1 Setup</span>
+                    <span className="text-[10px] uppercase text-zinc-400 block font-semibold">100% Upfront</span>
+                    <span className="text-sm font-bold text-white">{formatGBP(totalGBP)}</span>
+                    <span className="text-[9.5px] text-emerald-400 block">Due Upon Authorization</span>
                   </div>
                   <div className="rounded-lg bg-ck-bg p-2.5 border border-white/5">
-                    <span className="text-[10px] uppercase text-zinc-400 block font-semibold">50% Final</span>
-                    <span className="text-sm font-bold text-white">{formatGBP(totalGBP - Math.round(totalGBP / 2))}</span>
-                    <span className="text-[9.5px] text-zinc-400 block">Upon Staging Sign-Off</span>
+                    <span className="text-[10px] uppercase text-zinc-400 block font-semibold">Sprint Delivery</span>
+                    <span className="text-sm font-bold text-white">{commandCenterEnabled ? '3-4 Weeks' : '2-3 Weeks'}</span>
+                    <span className="text-[9.5px] text-zinc-400 block">Staging Preview Launch</span>
                   </div>
                 </div>
 
                 {/* Fast Note on Currency & Staging */}
                 <p className="text-[10.5px] text-zinc-400 leading-normal pt-1">
-                  * Pricing is converted from South African Rand (ZAR) base rates (R35,000 core + R25,000 backend) to British Pounds (GBP) at ~21.8 ZAR/GBP, rounded for executive clarity.
+                  * Pricing is converted from South African Rand (ZAR) base rates ({formatZAR(BASE_BUILD_ZAR)} core + {formatZAR(COMMAND_CENTER_ZAR)} backend) to British Pounds (GBP) at ~21.8 ZAR/GBP, rounded for executive clarity.
                 </p>
               </div>
             </TiltCard>

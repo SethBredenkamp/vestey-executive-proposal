@@ -175,6 +175,9 @@ export function App() {
       });
       setPdfSuccessToast(true);
       setTimeout(() => setPdfSuccessToast(false), 4500);
+    } catch (err) {
+      console.error('Failed to generate proposal PDF:', err);
+      alert('Could not generate PDF. Please ensure popups and downloads are allowed in your browser.');
     } finally {
       setPdfDownloading(false);
     }
@@ -201,7 +204,7 @@ export function App() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-ck-bg text-ck-fg ck-hairline-grid">
+    <div className="relative min-h-screen flex flex-col bg-ck-bg text-ck-fg ck-hairline-grid overflow-x-hidden max-w-[100vw]">
       {/* Subtle Static Architectural Ambient Vignette */}
       <div
         className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.035),transparent_60%),radial-gradient(ellipse_at_bottom_right,rgba(56,189,248,0.02),transparent_50%)] no-print"
@@ -327,7 +330,7 @@ export function App() {
         <div className="border-t border-[var(--line)] bg-ck-bg2/80">
           <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
             <nav
-              className="flex md:grid md:grid-cols-6 items-center gap-2 overflow-x-auto no-scrollbar"
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth"
               aria-label="Proposal Pages"
             >
               {PAGE_STEPS.map((step, idx) => {

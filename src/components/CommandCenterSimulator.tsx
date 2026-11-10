@@ -70,9 +70,27 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
   ]);
 
   const [mockBrochures, setMockBrochures] = useState([
-    { name: 'Cresswell_Dairy_Catalogue_2026.pdf', size: '4.8 MB', updated: 'Today', status: 'Published' },
-    { name: 'Signature_Gourmet_Chicken_Brochure.pdf', size: '2.1 MB', updated: 'Yesterday', status: 'Published' },
-    { name: 'Sunnydale_Farms_Potato_Flyer.pdf', size: '1.9 MB', updated: '07 Nov 2026', status: 'Published' }
+    {
+      name: 'Cresswell_Dairy_Catalogue_2025.pdf',
+      size: '9.2 MB',
+      updated: '2025/2026 Edition',
+      status: 'Published',
+      fileUrl: '/catalogues/cresswell-dairy-catalogue-2025.pdf'
+    },
+    {
+      name: 'Signature_Gourmet_Chicken_Brochure.pdf',
+      size: '9.5 MB',
+      updated: 'Print Specification',
+      status: 'Published',
+      fileUrl: '/catalogues/cresswell-chicken-brochure.pdf'
+    },
+    {
+      name: 'Sunnydale_Farms_Potato_Flyer.pdf',
+      size: '4.6 MB',
+      updated: 'International Edition',
+      status: 'Published',
+      fileUrl: '/catalogues/sunnydale-farms-potato-flyer.pdf'
+    }
   ]);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -263,8 +281,8 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
               </button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-ck-bg overflow-hidden">
-              <table className="w-full text-left text-xs">
+            <div className="rounded-xl border border-white/10 bg-ck-bg overflow-x-auto">
+              <table className="w-full text-left text-xs min-w-[580px]">
                 <thead className="bg-ck-surface2 border-b border-white/5 text-[10.5px] font-mono text-zinc-400 uppercase">
                   <tr>
                     <th className="py-2.5 px-3">Product Name</th>
@@ -332,13 +350,16 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
                   </div>
                   <h5 className="text-xs font-bold text-white truncate">{b.name}</h5>
                   <div className="text-[11px] text-zinc-400 font-mono">Updated: {b.updated}</div>
-                  <button
-                    type="button"
-                    onClick={() => showToast(`Simulating download for ${b.name}`)}
-                    className="w-full mt-2 py-1 px-2.5 rounded bg-ck-surface text-[11px] text-zinc-300 hover:text-white border border-white/5 font-mono text-center block transition"
+                  <a
+                    href={b.fileUrl}
+                    download={b.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full mt-2 py-1.5 px-2.5 rounded bg-emerald-500/10 text-[11px] text-emerald-300 hover:bg-emerald-500/20 border border-emerald-500/30 font-mono text-center flex items-center justify-center gap-1.5 transition"
                   >
-                    View Current PDF
-                  </button>
+                    <Download className="h-3 w-3" />
+                    <span>Download Brochure</span>
+                  </a>
                 </div>
               ))}
             </div>
