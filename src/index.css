@@ -1,0 +1,379 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Code Kings Official Colour Tokens (Dark house look + Light editorial mode) */
+:root {
+  --bg: #08090a;
+  --bg-2: #0d0e10;
+  --surface: #111215;
+  --surface-2: #17181c;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
+  --fg: #f4f4f5;
+  --fg-2: #a1a1aa;
+  --fg-3: #8b8b94;
+  --accent: #34d399;
+  --accent-strong: #10b981;
+  --accent-ink: #022c1e;
+  --accent-soft: rgba(16, 185, 129, 0.12);
+  --accent-line: rgba(52, 211, 153, 0.35);
+  --accent-2: #22d3ee;
+  --brand-from: #10b981;
+  --brand-to: #06b6d4;
+  --grid: rgba(52, 211, 153, 0.035);
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #fafafa;
+  --bg-2: #f4f4f5;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --line: rgba(9, 9, 11, 0.08);
+  --line-2: rgba(9, 9, 11, 0.16);
+  --fg: #09090b;
+  --fg-2: #52525b;
+  --fg-3: #5f5f68;
+  --accent: #047857;
+  --accent-strong: #047857;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(5, 150, 105, 0.08);
+  --accent-line: rgba(5, 150, 105, 0.3);
+  --accent-2: #0891b2;
+  --brand-from: #059669;
+  --brand-to: #0891b2;
+  --grid: rgba(5, 150, 105, 0.045);
+  color-scheme: light;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  /* Official Code Kings Crown Mask from seth-portfolio */
+  .crown {
+    display: inline-block;
+    aspect-ratio: 256 / 175;
+    background: linear-gradient(120deg, var(--brand-from), var(--brand-to));
+    -webkit-mask: url("./assets/crown.webp") center / contain no-repeat;
+    mask: url("./assets/crown.webp") center / contain no-repeat;
+  }
+
+  .ck-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ck-eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: var(--accent-line);
+  }
+
+  .ck-brand-text {
+    background: linear-gradient(100deg, var(--brand-from), var(--brand-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .ck-card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+  }
+
+  .ck-hairline-grid {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+}
+
+/* Directional Navigation View Transitions (from modern-web-guidance: directional-navigation-transitions) */
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-28px);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(28px);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-to-right {
+  to {
+    transform: translateX(28px);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-left {
+  from {
+    transform: translateX(-28px);
+    opacity: 0;
+  }
+}
+
+::view-transition-group(root) {
+  animation: 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+html:active-view-transition-type(forward)::view-transition-old(root) {
+  animation-name: slide-to-left;
+}
+html:active-view-transition-type(forward)::view-transition-new(root) {
+  animation-name: slide-from-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-old(root) {
+  animation-name: slide-to-right;
+}
+html:active-view-transition-type(backward)::view-transition-new(root) {
+  animation-name: slide-from-left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation: none !important;
+  }
+}
+
+/* Custom Responsive Table Pattern (from modern-web-guidance: responsive-table) */
+.table-wrapper {
+  overflow: auto;
+  max-inline-size: 100%;
+  container-type: inline-size;
+}
+
+.responsive-sow-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  --label-1: "Module / Scope Item";
+  --label-2: "Core Focus";
+  --label-3: "Included Deliverables";
+  --label-4: "Cost (USD)";
+}
+
+.responsive-sow-table thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
+}
+
+.responsive-sow-table tbody th {
+  position: sticky;
+  inset-inline-start: 0;
+  background-color: var(--surface);
+  z-index: 5;
+}
+
+@container (width < 640px) {
+  .responsive-sow-table,
+  .responsive-sow-table thead,
+  .responsive-sow-table tbody,
+  .responsive-sow-table tr,
+  .responsive-sow-table th,
+  .responsive-sow-table td {
+    display: block;
+  }
+
+  .responsive-sow-table thead {
+    display: none;
+  }
+
+  .responsive-sow-table tbody tr {
+    margin-block-end: 1rem;
+    border: 1px solid var(--line-2);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .responsive-sow-table tbody th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+    background: var(--surface-2);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .responsive-sow-table td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .responsive-sow-table td:nth-child(2)::before {
+    content: var(--label-2) ": ";
+    font-weight: 600;
+    color: var(--accent);
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+  }
+
+  .responsive-sow-table td:nth-child(3)::before {
+    content: var(--label-3) ": ";
+    font-weight: 600;
+    color: var(--accent);
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+  }
+
+  .responsive-sow-table td:nth-child(4)::before {
+    content: var(--label-4) ": ";
+    font-weight: 600;
+    color: var(--accent);
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+  }
+}
+
+/* Native Details Accordion Styling */
+details.sow-disclosure summary {
+  list-style: none;
+}
+details.sow-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Pulsing SVG Data Flow Animation */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+.animate-data-flow {
+  stroke-dasharray: 5 7;
+  animation: dash-flow 2.5s linear infinite;
+}
+
+/* Boardroom Print Dossier Styling (@media print) */
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 0.45in;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #09090b !important;
+    font-size: 9.5pt;
+    line-height: 1.4;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-card,
+  .ck-card {
+    background: #ffffff !important;
+    color: #09090b !important;
+    border: 1px solid #d4d4d8 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    margin-bottom: 10pt !important;
+  }
+
+  .print-text-dark {
+    color: #09090b !important;
+  }
+
+  .print-subtext {
+    color: #3f3f46 !important;
+  }
+
+  .responsive-sow-table tbody th {
+    background-color: #f4f4f5 !important;
+    color: #09090b !important;
+  }
+}
+
+/* Premium Signature Field Glow & Enticement Animation */
+@keyframes signature-breathe {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3), 0 0 12px -2px rgba(16, 185, 129, 0.25);
+    border-color: rgba(52, 211, 153, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.75), 0 0 24px 3px rgba(16, 185, 129, 0.45);
+    border-color: rgba(52, 211, 153, 0.95);
+  }
+}
+
+.signature-input-glow {
+  animation: signature-breathe 2.8s ease-in-out infinite;
+}
+
+/* Premium Staging URL Soft Glow Animation */
+@keyframes staging-url-breathe {
+  0%, 100% {
+    box-shadow: 0 0 8px -1px rgba(16, 185, 129, 0.25), 0 0 16px -2px rgba(6, 182, 212, 0.15);
+    border-color: rgba(52, 211, 153, 0.4);
+    background-color: rgba(16, 185, 129, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 20px 2px rgba(52, 211, 153, 0.55), 0 0 30px 4px rgba(6, 182, 212, 0.35);
+    border-color: rgba(52, 211, 153, 0.9);
+    background-color: rgba(16, 185, 129, 0.16);
+  }
+}
+
+.staging-url-glow {
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #34d399;
+  text-decoration: none;
+  animation: staging-url-breathe 3.2s ease-in-out infinite;
+  transition: all 0.2s ease;
+}
+
+.staging-url-glow:hover {
+  border-color: #34d399;
+  box-shadow: 0 0 26px 4px rgba(52, 211, 153, 0.7), 0 0 38px 6px rgba(6, 182, 212, 0.45);
+  transform: translateY(-1px);
+}
+

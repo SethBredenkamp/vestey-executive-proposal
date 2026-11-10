@@ -1,0 +1,611 @@
+[
+ {
+  "brand": "dairy",
+  "page": 4,
+  "file": "dairy-p4-mozzarella-shredded.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 4,
+  "file": "dairy-p4-mozzarella-block.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 5,
+  "file": "dairy-p5-danish-white-cheese.jpg",
+  "w": 714,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 5,
+  "file": "dairy-p5-danish-blue-cheese.jpg",
+  "w": 714,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 6,
+  "file": "dairy-p6-italian-hard-cheese.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 6,
+  "file": "dairy-p6-grana-padano.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 7,
+  "file": "dairy-p7-gouda-wheel.jpg",
+  "w": 714,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 7,
+  "file": "dairy-p7-edam-ball.jpg",
+  "w": 714,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 7,
+  "file": "dairy-p7-goat-cheese.jpg",
+  "w": 715,
+  "h": 685
+ },
+ {
+  "brand": "dairy",
+  "page": 7,
+  "file": "dairy-p7-gouda-mature.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 8,
+  "file": "dairy-p8-cheddar-colored.jpg",
+  "w": 715,
+  "h": 685
+ },
+ {
+  "brand": "dairy",
+  "page": 8,
+  "file": "dairy-p8-cheddar-white.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 9,
+  "file": "dairy-p9-cheddar-colored.jpg",
+  "w": 714,
+  "h": 678
+ },
+ {
+  "brand": "dairy",
+  "page": 9,
+  "file": "dairy-p9-cheddar-white.jpg",
+  "w": 714,
+  "h": 721
+ },
+ {
+  "brand": "dairy",
+  "page": 9,
+  "file": "dairy-p9-cheddar-white.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 9,
+  "file": "dairy-p9-cheddar-colored.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 10,
+  "file": "dairy-p10-emmental.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 10,
+  "file": "dairy-p10-swiss-style.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 11,
+  "file": "dairy-p11-edam.jpg",
+  "w": 714,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 11,
+  "file": "dairy-p11-gouda.jpg",
+  "w": 714,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 12,
+  "file": "dairy-p12-edam-style.jpg",
+  "w": 714,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 12,
+  "file": "dairy-p12-cheddar-style-white.jpg",
+  "w": 714,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 12,
+  "file": "dairy-p12-gouda-style.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 12,
+  "file": "dairy-p12-cheddar-style-colored.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 13,
+  "file": "dairy-p13-mozzarella-style.jpg",
+  "w": 714,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 13,
+  "file": "dairy-p13-sos-cheddar-cheese.jpg",
+  "w": 714,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 13,
+  "file": "dairy-p13-butter-bulk.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 14,
+  "file": "dairy-p14-edam.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 14,
+  "file": "dairy-p14-emmental.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 15,
+  "file": "dairy-p15-gouda.jpg",
+  "w": 714,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 15,
+  "file": "dairy-p15-cheddar.jpg",
+  "w": 714,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 15,
+  "file": "dairy-p15-swiss.jpg",
+  "w": 715,
+  "h": 720
+ },
+ {
+  "brand": "dairy",
+  "page": 15,
+  "file": "dairy-p15-cheddar-slices.jpg",
+  "w": 715,
+  "h": 680
+ },
+ {
+  "brand": "dairy",
+  "page": 16,
+  "file": "dairy-p16-edam.jpg",
+  "w": 715,
+  "h": 396
+ },
+ {
+  "brand": "dairy",
+  "page": 16,
+  "file": "dairy-p16-emmental.jpg",
+  "w": 715,
+  "h": 426
+ },
+ {
+  "brand": "dairy",
+  "page": 16,
+  "file": "dairy-p16-cheddar.jpg",
+  "w": 715,
+  "h": 400
+ },
+ {
+  "brand": "dairy",
+  "page": 17,
+  "file": "dairy-p17-gouda.jpg",
+  "w": 714,
+  "h": 408
+ },
+ {
+  "brand": "dairy",
+  "page": 17,
+  "file": "dairy-p17-cheddar-colored.jpg",
+  "w": 714,
+  "h": 410
+ },
+ {
+  "brand": "dairy",
+  "page": 17,
+  "file": "dairy-p17-swiss.jpg",
+  "w": 714,
+  "h": 404
+ },
+ {
+  "brand": "dairy",
+  "page": 17,
+  "file": "dairy-p17-danish-blue-cheese.jpg",
+  "w": 715,
+  "h": 984
+ },
+ {
+  "brand": "dairy",
+  "page": 18,
+  "file": "dairy-p18-gouda.jpg",
+  "w": 715,
+  "h": 438
+ },
+ {
+  "brand": "dairy",
+  "page": 18,
+  "file": "dairy-p18-edam.jpg",
+  "w": 715,
+  "h": 397
+ },
+ {
+  "brand": "dairy",
+  "page": 18,
+  "file": "dairy-p18-emmentaler.jpg",
+  "w": 715,
+  "h": 366
+ },
+ {
+  "brand": "dairy",
+  "page": 19,
+  "file": "dairy-p19-toast.jpg",
+  "w": 714,
+  "h": 397
+ },
+ {
+  "brand": "dairy",
+  "page": 19,
+  "file": "dairy-p19-cheddar.jpg",
+  "w": 714,
+  "h": 438
+ },
+ {
+  "brand": "dairy",
+  "page": 19,
+  "file": "dairy-p19-mozzarella.jpg",
+  "w": 714,
+  "h": 366
+ },
+ {
+  "brand": "dairy",
+  "page": 1,
+  "file": "hero-dairy-cover.jpg",
+  "w": 1150,
+  "h": 1597
+ },
+ {
+  "brand": "dairy",
+  "page": 4,
+  "file": "hero-dairy-pizza.jpg",
+  "w": 550,
+  "h": 1546
+ },
+ {
+  "brand": "dairy",
+  "page": 14,
+  "file": "hero-dairy-sandwich.jpg",
+  "w": 550,
+  "h": 1546
+ },
+ {
+  "brand": "dairy",
+  "page": 6,
+  "file": "hero-dairy-italian.jpg",
+  "w": 630,
+  "h": 1556
+ },
+ {
+  "brand": "chicken",
+  "page": 1,
+  "file": "chicken-breaded-and-roasted-chicken-popcorn.jpg",
+  "w": 608,
+  "h": 301
+ },
+ {
+  "brand": "chicken",
+  "page": 1,
+  "file": "chicken-pack-breaded-and-roasted-chicken-popcorn.jpg",
+  "w": 418,
+  "h": 544
+ },
+ {
+  "brand": "chicken",
+  "page": 1,
+  "file": "chicken-breaded-and-fried-chicken-innerfillet.jpg",
+  "w": 608,
+  "h": 300
+ },
+ {
+  "brand": "chicken",
+  "page": 1,
+  "file": "chicken-pack-breaded-and-fried-chicken-innerfillet.jpg",
+  "w": 418,
+  "h": 545
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-steamed-fried-pieces-of-chicken-breast-on-a-skewer.jpg",
+  "w": 608,
+  "h": 301
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-pack-steamed-fried-pieces-of-chicken-breast-on-a-skewer.jpg",
+  "w": 414,
+  "h": 540
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-roasted-chicken-breast-in-strips.jpg",
+  "w": 605,
+  "h": 300
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-pack-roasted-chicken-breast-in-strips.jpg",
+  "w": 412,
+  "h": 539
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-roasted-chicken-innerfillets.jpg",
+  "w": 604,
+  "h": 300
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-pack-roasted-chicken-innerfillets.jpg",
+  "w": 414,
+  "h": 540
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-roasted-chicken-breast-in-slices.jpg",
+  "w": 608,
+  "h": 301
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-pack-roasted-chicken-breast-in-slices.jpg",
+  "w": 415,
+  "h": 540
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-whole-roasted-chicken-breasts.jpg",
+  "w": 604,
+  "h": 300
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-pack-whole-roasted-chicken-breasts.jpg",
+  "w": 415,
+  "h": 539
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-roasted-chicken-breast-in-dices.jpg",
+  "w": 609,
+  "h": 301
+ },
+ {
+  "brand": "chicken",
+  "page": 2,
+  "file": "chicken-pack-roasted-chicken-breast-in-dices.jpg",
+  "w": 415,
+  "h": 540
+ },
+ {
+  "brand": "chicken",
+  "page": 1,
+  "file": "hero-chicken-cover.jpg",
+  "w": 1026,
+  "h": 1434
+ },
+ {
+  "brand": "chicken",
+  "page": 1,
+  "file": "chicken-carton.jpg",
+  "w": 824,
+  "h": 618
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-uncoated-1-4-shoestring-fries-7-7mm.jpg",
+  "w": 390,
+  "h": 271
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-coated-1-4-shoestring-fries-7-7mm.jpg",
+  "w": 390,
+  "h": 270
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-uncoated-3-8-straight-cut-9-9mm.jpg",
+  "w": 392,
+  "h": 266
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-coated-3-8-straight-cut-9-9mm.jpg",
+  "w": 392,
+  "h": 272
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-uncoated-12-12-12-12mm.jpg",
+  "w": 392,
+  "h": 270
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-coated-sweet-potato.jpg",
+  "w": 392,
+  "h": 272
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-pack-1.jpg",
+  "w": 365,
+  "h": 341
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-pack-2.jpg",
+  "w": 364,
+  "h": 341
+ },
+ {
+  "brand": "fries",
+  "page": 1,
+  "file": "fries-pack-3.jpg",
+  "w": 364,
+  "h": 343
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-oval.jpg",
+  "w": 387,
+  "h": 271
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-triangle.jpg",
+  "w": 390,
+  "h": 267
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-balls.jpg",
+  "w": 386,
+  "h": 271
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-oliver.jpg",
+  "w": 387,
+  "h": 271
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-rounds.jpg",
+  "w": 386,
+  "h": 272
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-tater-tots.jpg",
+  "w": 386,
+  "h": 271
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-skin-on-wedges.jpg",
+  "w": 387,
+  "h": 272
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-criss-cross.jpg",
+  "w": 386,
+  "h": 272
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "fries-smiley.jpg",
+  "w": 392,
+  "h": 269
+ },
+ {
+  "brand": "fries",
+  "page": 2,
+  "file": "hero-fries-bg.jpg",
+  "w": 940,
+  "h": 629
+ }
+]
