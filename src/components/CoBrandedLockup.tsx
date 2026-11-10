@@ -42,10 +42,11 @@ export const CoBrandedLockup: React.FC<CoBrandedLockupProps> = ({ size = 'sm', o
         <div className="text-left">
           <span
             className={`block font-semibold tracking-tight text-ck-fg print-text-dark whitespace-nowrap ${
-              isLarge ? 'text-sm sm:text-base' : isMedium ? 'text-xs sm:text-sm' : 'text-[10.5px] sm:text-[11.5px]'
+              isLarge ? 'text-sm sm:text-base' : isMedium ? 'text-xs sm:text-sm' : 'text-[10px] sm:text-[11.5px]'
             }`}
           >
-            Vestey Foods International
+            <span className="hidden min-[420px]:inline">Vestey Foods International</span>
+            <span className="min-[420px]:hidden">Vestey Foods</span>
           </span>
           <span className="hidden sm:block font-mono text-[9.5px] text-ck-fg2 print-subtext">
             Since 1897 • Cresswell & Sunnydale Farms

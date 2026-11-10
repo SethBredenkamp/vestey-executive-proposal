@@ -466,7 +466,7 @@ export function App() {
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-start gap-3 w-full sm:w-auto">
               {currentStepIndex > 0 && (
                 <button
                   type="button"

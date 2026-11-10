@@ -410,7 +410,7 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
             {/* ==============================================================
                 LEFT SIDEPANEL: MODAL LAUNCHERS & NAVIGATION
                 ============================================================== */}
-            <aside className="lg:col-span-4 border-r border-white/10 bg-ck-surface p-4 sm:p-5 flex flex-col justify-between space-y-6">
+            <aside className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-white/10 bg-ck-surface p-4 sm:p-5 flex flex-col justify-between space-y-6">
               <div className="space-y-5">
                 {/* Brand Header inside sidepanel */}
                 <div className="border-b border-white/5 pb-4">
@@ -802,7 +802,7 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
       {/* MODAL 1: Edit Product Specification */}
       {activeModal === 'editProduct' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in">
-          <div className="w-full max-w-lg rounded-2xl border border-emerald-500/40 bg-ck-surface p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-ck-surface p-5 sm:p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <Edit3 className="h-4 w-4 text-emerald-400" />
@@ -893,7 +893,7 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
       {/* MODAL 2: Add New SKU Modal */}
       {activeModal === 'addSku' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in">
-          <div className="w-full max-w-lg rounded-2xl border border-emerald-500/40 bg-ck-surface p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-ck-surface p-5 sm:p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <PackagePlus className="h-4 w-4 text-emerald-400" />
@@ -981,7 +981,7 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
       {/* MODAL 3: Upload PDF Brochure Modal */}
       {activeModal === 'uploadPdf' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in">
-          <div className="w-full max-w-lg rounded-2xl border border-cyan-500/40 bg-ck-surface p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-cyan-500/40 bg-ck-surface p-5 sm:p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <FileUp className="h-4 w-4 text-cyan-400" />
@@ -1049,7 +1049,7 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
       {/* MODAL 4: Container RFQ Detail Modal */}
       {activeModal === 'viewLead' && selectedLead && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in">
-          <div className="w-full max-w-lg rounded-2xl border border-amber-500/40 bg-ck-surface p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-amber-500/40 bg-ck-surface p-5 sm:p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-amber-400" />
@@ -1119,7 +1119,7 @@ export const CommandCenterSimulator: React.FC<CommandCenterSimulatorProps> = ({
       {/* MODAL 5: Storefront Notice Bar Modal */}
       {activeModal === 'announcement' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in">
-          <div className="w-full max-w-lg rounded-2xl border border-emerald-500/40 bg-ck-surface p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-ck-surface p-5 sm:p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <Bell className="h-4 w-4 text-emerald-400" />

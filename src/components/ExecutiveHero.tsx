@@ -172,7 +172,7 @@ export const ExecutiveHero: React.FC<ExecutiveHeroProps> = ({
               <button
                 type="button"
                 onClick={onJumpToSign}
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:from-emerald-400 hover:to-teal-400 transition shadow-lg shadow-emerald-500/20 active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3.5 text-sm font-semibold text-slate-950 hover:from-emerald-400 hover:to-teal-400 transition shadow-lg shadow-emerald-500/20 active:scale-[0.98]"
               >
                 <span>Review & Accept Proposal ({formatGBP(totalGBP)})</span>
                 <ArrowRight className="h-4 w-4" />
